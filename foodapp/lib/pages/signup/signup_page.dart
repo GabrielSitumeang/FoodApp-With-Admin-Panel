@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/pages/signup/components/signup_auth_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/my_button.dart';
 
@@ -10,9 +12,15 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignupPage> {
-  bool visibility = false;
+  TextEditingController fullName = TextEditingController();
+  TextEditingController emailAddress = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  bool visibility = true;
   @override
   Widget build(BuildContext context) {
+    SignupAuthProvider signupAuthProvider =
+        Provider.of<SignupAuthProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -30,17 +38,20 @@ class _SignUpPageState extends State<SignupPage> {
               Column(
                 children: [
                   TextFormField(
+                    controller: fullName,
                     decoration: InputDecoration(
                       hintText: "Full name",
                     ),
                   ),
                   TextFormField(
+                    controller: emailAddress,
                     decoration: InputDecoration(
                       hintText: "Email address",
                     ),
                   ),
                   TextFormField(
                     obscureText: visibility,
+                    controller: password,
                     decoration: InputDecoration(
                       hintText: "Password",
                       suffixIcon: IconButton(
@@ -60,7 +71,13 @@ class _SignUpPageState extends State<SignupPage> {
               Column(
                 children: [
                   MyButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      signupAuthProvider.signupValidation(
+                          fullName: fullName,
+                          context: context,
+                          emailAddress: emailAddress,
+                          password: password);
+                    },
                     text: "SIGN UP",
                   ),
                   SizedBox(
